@@ -1,51 +1,47 @@
 ﻿using System;
 
-class Aluno
+class ContaBancaria
 {
-    public string RA { get; set; }
-    public string Nome { get; set; }
-    public double NotaProva { get; set; }
-    public double NotaTrabalho { get; set; }
-    public double NotaFinal { get; private set; }
+    public string NumeroConta { get; set; }
+    public string Titular { get; set; }
+    private double Saldo;
 
-    public void ReceberDados()
+    public ContaBancaria(string numeroConta, string titular)
     {
-        Console.Write("Digite o RA do aluno: ");
-        RA = Console.ReadLine();
-
-        Console.Write("Digite o Nome do aluno: ");
-        Nome = Console.ReadLine();
-
-        Console.Write("Digite a Nota da Prova: ");
-        NotaProva = Convert.ToDouble(Console.ReadLine());
-
-        Console.Write("Digite a Nota do Trabalho: ");
-        NotaTrabalho = Convert.ToDouble(Console.ReadLine());
+        NumeroConta = numeroConta;
+        Titular = titular;
+        Saldo = 0.0;
     }
 
-    public void CalcularMedia()
+    public void Depositar(double valor)
     {
-        NotaFinal = (NotaProva + NotaTrabalho) / 2;
-    }
-
-    public bool CalcularNotaFinal()
-    {
-        double notaNecessaria = 6.0 - NotaFinal;
-        if (NotaFinal >= 6.0)
+        if (valor > 0)
         {
-            Console.WriteLine("Aluno aprovado!");
-            return true;
+            Saldo += valor;
+            Console.WriteLine($"Depósito de R${valor:F2} realizado com sucesso.");
         }
         else
         {
-            Console.WriteLine($"Aluno em prova final. Precisa de {notaNecessaria:F2} pontos para ser aprovado.");
-            return false;
+            Console.WriteLine("Valor de depósito inválido.");
         }
     }
 
-    public void ImprimirNotaFinal()
+    public void Sacar(double valor)
     {
-        Console.WriteLine($"Nota Final do aluno {Nome} ({RA}): {NotaFinal:F2}");
+        if (valor > 0 && valor <= Saldo)
+        {
+            Saldo -= valor;
+            Console.WriteLine($"Saque de R${valor:F2} realizado com sucesso.");
+        }
+        else
+        {
+            Console.WriteLine("Saldo insuficiente ou valor inválido para saque.");
+        }
+    }
+
+    public void ExibirSaldo()
+    {
+        Console.WriteLine($"Saldo atual: R${Saldo:F2}");
     }
 }
 
@@ -53,10 +49,47 @@ class Program
 {
     static void Main()
     {
-        Aluno aluno = new Aluno();
-        aluno.ReceberDados();
-        aluno.CalcularMedia();
-        aluno.ImprimirNotaFinal();
-        aluno.CalcularNotaFinal();
+        Console.Write("Digite o número da conta: ");
+        string numeroConta = Console.ReadLine();
+
+        Console.Write("Digite o nome do titular: ");
+        string titular = Console.ReadLine();
+
+        ContaBancaria conta = new ContaBancaria(numeroConta, titular);
+
+        int opcao;
+        do
+        {
+            Console.WriteLine("\nEscolha uma opção:");
+            Console.WriteLine("1 - Depositar");
+            Console.WriteLine("2 - Sacar");
+            Console.WriteLine("3 - Exibir Saldo");
+            Console.WriteLine("0 - Sair");
+            Console.Write("Opção: ");
+            opcao = Convert.ToInt32(Console.ReadLine());
+
+            switch (opcao)
+            {
+                case 1:
+                    Console.Write("Digite o valor do depósito: ");
+                    double deposito = Convert.ToDouble(Console.ReadLine());
+                    conta.Depositar(deposito);
+                    break;
+                case 2:
+                    Console.Write("Digite o valor do saque: ");
+                    double saque = Convert.ToDouble(Console.ReadLine());
+                    conta.Sacar(saque);
+                    break;
+                case 3:
+                    conta.ExibirSaldo();
+                    break;
+                case 0:
+                    Console.WriteLine("Encerrando o programa...");
+                    break;
+                default:
+                    Console.WriteLine("Opção inválida. Tente novamente.");
+                    break;
+            }
+        } while (opcao != 0);
     }
 }
