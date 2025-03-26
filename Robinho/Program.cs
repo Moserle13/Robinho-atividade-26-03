@@ -1,47 +1,24 @@
 ﻿using System;
 
-class Produto
+class Lampada
 {
-    public string Nome { get; set; }
-    public double Preco { get; set; }
-    public int Quantidade { get; private set; }
+    private bool Ligada;
 
-    public Produto(string nome, double preco, int quantidade)
+    public void Ligar()
     {
-        Nome = nome;
-        Preco = preco;
-        Quantidade = quantidade;
+        Ligada = true;
+        Console.WriteLine("A lâmpada está ligada.");
     }
 
-    public void AdicionarEstoque(int quantidade)
+    public void Desligar()
     {
-        if (quantidade > 0)
-        {
-            Quantidade += quantidade;
-            Console.WriteLine($"{quantidade} unidades adicionadas ao estoque.");
-        }
-        else
-        {
-            Console.WriteLine("Quantidade inválida para adicionar ao estoque.");
-        }
+        Ligada = false;
+        Console.WriteLine("A lâmpada está desligada.");
     }
 
-    public void RemoverEstoque(int quantidade)
+    public void MostrarEstado()
     {
-        if (quantidade > 0 && quantidade <= Quantidade)
-        {
-            Quantidade -= quantidade;
-            Console.WriteLine($"{quantidade} unidades removidas do estoque.");
-        }
-        else
-        {
-            Console.WriteLine("Quantidade insuficiente em estoque ou valor inválido.");
-        }
-    }
-
-    public void ExibirDetalhes()
-    {
-        Console.WriteLine($"Produto: {Nome}\nPreço: R${Preco:F2}\nQuantidade em estoque: {Quantidade}");
+        Console.WriteLine(Ligada ? "A lâmpada está ligada." : "A lâmpada está desligada.");
     }
 }
 
@@ -49,24 +26,15 @@ class Program
 {
     static void Main()
     {
-        Console.Write("Digite o nome do produto: ");
-        string nome = Console.ReadLine();
-
-        Console.Write("Digite o preço do produto: ");
-        double preco = Convert.ToDouble(Console.ReadLine());
-
-        Console.Write("Digite a quantidade inicial em estoque: ");
-        int quantidade = Convert.ToInt32(Console.ReadLine());
-
-        Produto produto = new Produto(nome, preco, quantidade);
+        Lampada lampada = new Lampada();
 
         int opcao;
         do
         {
             Console.WriteLine("\nEscolha uma opção:");
-            Console.WriteLine("1 - Adicionar ao estoque");
-            Console.WriteLine("2 - Remover do estoque");
-            Console.WriteLine("3 - Exibir detalhes do produto");
+            Console.WriteLine("1 - Ligar a lâmpada");
+            Console.WriteLine("2 - Desligar a lâmpada");
+            Console.WriteLine("3 - Mostrar estado da lâmpada");
             Console.WriteLine("0 - Sair");
             Console.Write("Opção: ");
             opcao = Convert.ToInt32(Console.ReadLine());
@@ -74,17 +42,13 @@ class Program
             switch (opcao)
             {
                 case 1:
-                    Console.Write("Digite a quantidade a adicionar: ");
-                    int adicionar = Convert.ToInt32(Console.ReadLine());
-                    produto.AdicionarEstoque(adicionar);
+                    lampada.Ligar();
                     break;
                 case 2:
-                    Console.Write("Digite a quantidade a remover: ");
-                    int remover = Convert.ToInt32(Console.ReadLine());
-                    produto.RemoverEstoque(remover);
+                    lampada.Desligar();
                     break;
                 case 3:
-                    produto.ExibirDetalhes();
+                    lampada.MostrarEstado();
                     break;
                 case 0:
                     Console.WriteLine("Encerrando o programa...");
