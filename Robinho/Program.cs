@@ -1,47 +1,47 @@
 ﻿using System;
 
-class ContaBancaria
+class Produto
 {
-    public string NumeroConta { get; set; }
-    public string Titular { get; set; }
-    private double Saldo;
+    public string Nome { get; set; }
+    public double Preco { get; set; }
+    public int Quantidade { get; private set; }
 
-    public ContaBancaria(string numeroConta, string titular)
+    public Produto(string nome, double preco, int quantidade)
     {
-        NumeroConta = numeroConta;
-        Titular = titular;
-        Saldo = 0.0;
+        Nome = nome;
+        Preco = preco;
+        Quantidade = quantidade;
     }
 
-    public void Depositar(double valor)
+    public void AdicionarEstoque(int quantidade)
     {
-        if (valor > 0)
+        if (quantidade > 0)
         {
-            Saldo += valor;
-            Console.WriteLine($"Depósito de R${valor:F2} realizado com sucesso.");
+            Quantidade += quantidade;
+            Console.WriteLine($"{quantidade} unidades adicionadas ao estoque.");
         }
         else
         {
-            Console.WriteLine("Valor de depósito inválido.");
+            Console.WriteLine("Quantidade inválida para adicionar ao estoque.");
         }
     }
 
-    public void Sacar(double valor)
+    public void RemoverEstoque(int quantidade)
     {
-        if (valor > 0 && valor <= Saldo)
+        if (quantidade > 0 && quantidade <= Quantidade)
         {
-            Saldo -= valor;
-            Console.WriteLine($"Saque de R${valor:F2} realizado com sucesso.");
+            Quantidade -= quantidade;
+            Console.WriteLine($"{quantidade} unidades removidas do estoque.");
         }
         else
         {
-            Console.WriteLine("Saldo insuficiente ou valor inválido para saque.");
+            Console.WriteLine("Quantidade insuficiente em estoque ou valor inválido.");
         }
     }
 
-    public void ExibirSaldo()
+    public void ExibirDetalhes()
     {
-        Console.WriteLine($"Saldo atual: R${Saldo:F2}");
+        Console.WriteLine($"Produto: {Nome}\nPreço: R${Preco:F2}\nQuantidade em estoque: {Quantidade}");
     }
 }
 
@@ -49,21 +49,24 @@ class Program
 {
     static void Main()
     {
-        Console.Write("Digite o número da conta: ");
-        string numeroConta = Console.ReadLine();
+        Console.Write("Digite o nome do produto: ");
+        string nome = Console.ReadLine();
 
-        Console.Write("Digite o nome do titular: ");
-        string titular = Console.ReadLine();
+        Console.Write("Digite o preço do produto: ");
+        double preco = Convert.ToDouble(Console.ReadLine());
 
-        ContaBancaria conta = new ContaBancaria(numeroConta, titular);
+        Console.Write("Digite a quantidade inicial em estoque: ");
+        int quantidade = Convert.ToInt32(Console.ReadLine());
+
+        Produto produto = new Produto(nome, preco, quantidade);
 
         int opcao;
         do
         {
             Console.WriteLine("\nEscolha uma opção:");
-            Console.WriteLine("1 - Depositar");
-            Console.WriteLine("2 - Sacar");
-            Console.WriteLine("3 - Exibir Saldo");
+            Console.WriteLine("1 - Adicionar ao estoque");
+            Console.WriteLine("2 - Remover do estoque");
+            Console.WriteLine("3 - Exibir detalhes do produto");
             Console.WriteLine("0 - Sair");
             Console.Write("Opção: ");
             opcao = Convert.ToInt32(Console.ReadLine());
@@ -71,17 +74,17 @@ class Program
             switch (opcao)
             {
                 case 1:
-                    Console.Write("Digite o valor do depósito: ");
-                    double deposito = Convert.ToDouble(Console.ReadLine());
-                    conta.Depositar(deposito);
+                    Console.Write("Digite a quantidade a adicionar: ");
+                    int adicionar = Convert.ToInt32(Console.ReadLine());
+                    produto.AdicionarEstoque(adicionar);
                     break;
                 case 2:
-                    Console.Write("Digite o valor do saque: ");
-                    double saque = Convert.ToDouble(Console.ReadLine());
-                    conta.Sacar(saque);
+                    Console.Write("Digite a quantidade a remover: ");
+                    int remover = Convert.ToInt32(Console.ReadLine());
+                    produto.RemoverEstoque(remover);
                     break;
                 case 3:
-                    conta.ExibirSaldo();
+                    produto.ExibirDetalhes();
                     break;
                 case 0:
                     Console.WriteLine("Encerrando o programa...");
