@@ -1,40 +1,19 @@
 ﻿using System;
 
-class Lampada
+class Jogo
 {
-    private bool Ligada;
+    static char[] tabuleiro = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+    static Random random = new Random();
 
-    public void Ligar()
-    {
-        Ligada = true;
-        Console.WriteLine("A lâmpada está ligada.");
-    }
-
-    public void Desligar()
-    {
-        Ligada = false;
-        Console.WriteLine("A lâmpada está desligada.");
-    }
-
-    public void MostrarEstado()
-    {
-        Console.WriteLine(Ligada ? "A lâmpada está ligada." : "A lâmpada está desligada.");
-    }
-}
-
-class Program
-{
     static void Main()
     {
-        Lampada lampada = new Lampada();
-
         int opcao;
         do
         {
-            Console.WriteLine("\nEscolha uma opção:");
-            Console.WriteLine("1 - Ligar a lâmpada");
-            Console.WriteLine("2 - Desligar a lâmpada");
-            Console.WriteLine("3 - Mostrar estado da lâmpada");
+            Console.Clear();
+            Console.WriteLine("Escolha um modo de jogo:");
+            Console.WriteLine("1 - Jogar H x H");
+            Console.WriteLine("2 - Jogar H x M (Fácil)");
             Console.WriteLine("0 - Sair");
             Console.Write("Opção: ");
             opcao = Convert.ToInt32(Console.ReadLine());
@@ -42,21 +21,30 @@ class Program
             switch (opcao)
             {
                 case 1:
-                    lampada.Ligar();
+                    JogarContraHumano();
                     break;
                 case 2:
-                    lampada.Desligar();
-                    break;
-                case 3:
-                    lampada.MostrarEstado();
+                    JogarContraMaquina();
                     break;
                 case 0:
-                    Console.WriteLine("Encerrando o programa...");
+                    Console.WriteLine("Saindo do jogo...");
                     break;
                 default:
-                    Console.WriteLine("Opção inválida. Tente novamente.");
+                    Console.WriteLine("Opção inválida, tente novamente.");
                     break;
             }
         } while (opcao != 0);
+    }
+
+    static void JogarContraHumano()
+    {
+        Console.WriteLine("Modo H x H selecionado.");
+        // Implementação do jogo entre dois humanos pode ser adicionada aqui
+    }
+
+    static void JogarContraMaquina()
+    {
+        Console.WriteLine("Modo H x M (Fácil) selecionado.");
+        // Implementação do jogo contra a máquina com estratégia aleatória
     }
 }
